@@ -12,11 +12,6 @@ def driverChrome(request):
     request.addfinalizer(wd.quit)
     return wd
 
-def get_new_window(driver,wait, windows):
-    new_windows = driver.window_handles
-    wait.until(lambda d: len(windows)<len(new_windows))
-    return windows-new_windows
-
 def add_country(driver):
     driver.get("http://localhost/litecart/admin/")
     driver.find_element(By.NAME, "username").send_keys("admin")
