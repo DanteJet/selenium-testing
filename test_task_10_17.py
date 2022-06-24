@@ -10,9 +10,10 @@ from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.fixture
 def driverChrome(request):
-    caps = DesiredCapabilities.CHROME
-    caps['goog:loggingPrefs'] = {'browser':'ALL' }
-    wd = webdriver.Chrome(desired_capabilities=caps)
+    # caps = DesiredCapabilities.CHROME
+    # caps['goog:loggingPrefs'] = {'browser':'ALL' }
+    # desired_capabilities = caps
+    wd = webdriver.Chrome()
     print(wd.capabilities)
     request.addfinalizer(wd.quit)
     return wd
@@ -41,16 +42,14 @@ def check_products(driver):
 
     links_len = len(driver.find_elements(By.XPATH, '//*[@id="content"]/form/table/tbody/tr/td[3]/a'))
     links_len = links_len+4
-    print(links_len)
     for link in range(5, links_len):
         duck = driver.find_element(By.XPATH,'//*[@id="content"]/form/table/tbody/tr['+str(link)+']/td[3]/a')
         duck.click()
         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="content"]/h1')))
         #time.sleep(2)
         logs = driver.get_log('browser')
-        assert len(logs)>0, "Logs bad("
+        assert len(logs)==0, "Logs bad("
         go_to_catalog(driver, wait)
-
     driver.close()
 
 def test_admin_page(driverChrome):
